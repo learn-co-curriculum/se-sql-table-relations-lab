@@ -10,8 +10,14 @@ conn = sqlite3.connect('data.sqlite')
 pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 
 # STEP 1
-# Replace None with your code
-df_boston = None
+# Return the first and last names and the job titles for all employees in Boston.
+
+df_boston = pd.read_sql("""
+    SELECT firstName, lastName, jobTitle 
+    FROM employees 
+    JOIN offices USING(officeCode) 
+    WHERE city = 'Boston';
+""", conn)
 
 # STEP 2
 # Replace None with your code
