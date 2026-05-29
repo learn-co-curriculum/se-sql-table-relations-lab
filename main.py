@@ -61,9 +61,14 @@ df_credit = pd.read_sql("""
     ORDER BY num_customers DESC;
 """, conn)
 
-# STEP 7
-# Replace None with your code
-df_product_sold = None
+# STEP 7: Product name, count of orders (numorders), total quantity sold (totalunits). Sorted by totalunits DESC.
+df_product_sold = pd.read_sql("""
+    SELECT p.productName, COUNT(od.orderNumber) AS numorders, SUM(od.quantityOrdered) AS totalunits 
+    FROM products p 
+    JOIN orderdetails od ON p.productCode = od.productCode 
+    GROUP BY p.productCode, p.productName 
+    ORDER BY totalunits DESC;
+""", conn)
 
 # STEP 8
 # Replace None with your code
