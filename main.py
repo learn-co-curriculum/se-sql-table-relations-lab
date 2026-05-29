@@ -19,9 +19,12 @@ df_boston = pd.read_sql("""
     WHERE city = 'Boston';
 """, conn)
 
-# STEP 2
-# Replace None with your code
-df_zero_emp = None
+# STEP 2: Are there any offices that have zero employees?
+df_zero_emp = pd.read_sql("""
+    SELECT o.* FROM offices o 
+    LEFT JOIN employees e ON o.officeCode = e.officeCode 
+    WHERE e.employeeNumber IS NULL;
+""", conn)
 
 # STEP 3
 # Replace None with your code
