@@ -26,9 +26,13 @@ df_zero_emp = pd.read_sql("""
     WHERE e.employeeNumber IS NULL;
 """, conn)
 
-# STEP 3
-# Replace None with your code
-df_employee = None
+# STEP 3: Return employees' first/last name and city/state of their office. Include all employees, order by first then last name.
+df_employee = pd.read_sql("""
+    SELECT e.firstName, e.lastName, o.city, o.state 
+    FROM employees e 
+    LEFT JOIN offices o ON e.officeCode = o.officeCode 
+    ORDER BY e.firstName, e.lastName;
+""", conn)
 
 # STEP 4
 # Replace None with your code
