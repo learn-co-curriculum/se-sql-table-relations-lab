@@ -89,8 +89,22 @@ df_customers = pd.read_sql("""
     GROUP BY o.officeCode, o.city;
 """, conn)
 
-# STEP 10
-# Replace None with your code
-df_under_20 = None
+# STEP 10: Subquery/CTE for employees who sold products ordered by fewer than 20 unique customers.
+df_under_20 = pd.read_sql("""
+    WITH UnderperformingProducts AS (
+        SELECT od.productCode 
+        FROM orderdetails od 
+        JOIN orders o ON od.orderNumber = o.orderNumber 
+        GROUP BY od.productCode 
+        HAVING COUNT(DISTINCT o.customerNumber) < 20
+    )
+    SELECT DISTINCT e.employeeNumber, e.firstName, e.lastName, off.city, off.officeCode 
+    FROM employees e 
+    JOIN offices off ON e.officeCode = off.officeCode 
+    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
+    JOIN orders o ON c.customerNumber = o.customerNumber 
+    JOIN orderdetails od ON o.orderNumber = od.orderNumber 
+    JOIN UnderperformingProducts up ON od.productCode = up.productCode;
+""", conn)
 
 conn.close()
