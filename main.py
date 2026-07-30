@@ -17,9 +17,6 @@ FROM employees e
 JOIN offices o ON e.officeCode = o.officeCode
 WHERE o.city = 'Boston'
 """, conn)
-print("Step 1 - Boston Employees:")
-print(df_boston)
-print()
 
 # STEP 2
 # Are there any offices that have zero employees?
@@ -29,9 +26,6 @@ FROM offices o
 LEFT JOIN employees e ON o.officeCode = e.officeCode
 WHERE e.employeeNumber IS NULL
 """, conn)
-print("Step 2 - Offices with zero employees:")
-print(df_zero_emp)
-print()
 
 # STEP 3
 # Return employees first and last name along with city and state of their office
@@ -42,9 +36,6 @@ FROM employees e
 LEFT JOIN offices o ON e.officeCode = o.officeCode
 ORDER BY e.firstName, e.lastName
 """, conn)
-print("Step 3 - All employees with office info:")
-print(df_employee)
-print()
 
 # STEP 4
 # Return contact info for customers who have not placed an order
@@ -56,9 +47,6 @@ LEFT JOIN orders o ON c.customerNumber = o.customerNumber
 WHERE o.orderNumber IS NULL
 ORDER BY c.contactLastName
 """, conn)
-print("Step 4 - Customers with no orders:")
-print(df_contacts)
-print()
 
 # STEP 5
 # Return customer contacts with payment amounts and dates
@@ -69,9 +57,6 @@ FROM customers c
 JOIN payments p ON c.customerNumber = p.customerNumber
 ORDER BY CAST(p.amount AS REAL) DESC
 """, conn)
-print("Step 5 - Customer payments sorted by amount:")
-print(df_payment.head())
-print()
 
 # STEP 6
 # Return employee number, first name, last name, and number of customers
@@ -86,9 +71,6 @@ GROUP BY e.employeeNumber
 HAVING AVG(c.creditLimit) > 90000
 ORDER BY num_customers DESC
 """, conn)
-print("Step 6 - Sales reps with avg credit limit over 90k:")
-print(df_credit)
-print()
 
 # STEP 7
 # Return product name, count of orders (numorders), and total units sold (totalunits)
@@ -102,9 +84,6 @@ JOIN orderdetails od ON p.productCode = od.productCode
 GROUP BY p.productCode
 ORDER BY totalunits DESC
 """, conn)
-print("Step 7 - Top selling products:")
-print(df_product_sold.head())
-print()
 
 # STEP 8
 # Return product name, code, and total number of unique customers (numpurchasers)
@@ -118,9 +97,6 @@ JOIN orders o ON od.orderNumber = o.orderNumber
 GROUP BY p.productCode
 ORDER BY numpurchasers DESC
 """, conn)
-print("Step 8 - Products by number of unique purchasers:")
-print(df_total_customers.head())
-print()
 
 # STEP 9
 # Return number of customers per office (n_customers), office code, and city
@@ -132,9 +108,6 @@ JOIN employees e ON o.officeCode = e.officeCode
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
 GROUP BY o.officeCode
 """, conn)
-print("Step 9 - Customers per office:")
-print(df_customers)
-print()
 
 # STEP 10
 # Select employees who sold products ordered by fewer than 20 customers
@@ -156,7 +129,5 @@ WHERE od.productCode IN (
 )
 ORDER BY e.lastName
 """, conn)
-print("Step 10 - Employees who sold underperforming products:")
-print(df_under_20)
 
 conn.close()
