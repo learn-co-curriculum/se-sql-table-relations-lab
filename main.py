@@ -27,4 +27,14 @@ LEFT JOIN employees e ON o.officeCode = e.officeCode
 WHERE e.employeeNumber IS NULL
 """, conn)
 
+# STEP 3
+# Return employees first and last name along with city and state of their office
+# Include all employees, order by first name then last name
+df_employee = pd.read_sql("""
+SELECT e.firstName, e.lastName, o.city, o.state
+FROM employees e
+LEFT JOIN offices o ON e.officeCode = o.officeCode
+ORDER BY e.firstName, e.lastName
+""", conn)
+
 conn.close()
