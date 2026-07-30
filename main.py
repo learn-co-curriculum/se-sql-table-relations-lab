@@ -72,4 +72,17 @@ HAVING AVG(c.creditLimit) > 90000
 ORDER BY num_customers DESC
 """, conn)
 
+# STEP 7
+# Return product name, count of orders (numorders), and total units sold (totalunits)
+# Sort by totalunits highest to lowest
+df_product_sold = pd.read_sql("""
+SELECT p.productName,
+       COUNT(od.orderNumber) AS numorders,
+       SUM(od.quantityOrdered) AS totalunits
+FROM products p
+JOIN orderdetails od ON p.productCode = od.productCode
+GROUP BY p.productCode
+ORDER BY totalunits DESC
+""", conn)
+
 conn.close()
