@@ -98,4 +98,15 @@ GROUP BY p.productCode
 ORDER BY numpurchasers DESC
 """, conn)
 
+# STEP 9
+# Return number of customers per office (n_customers), office code, and city
+df_customers = pd.read_sql("""
+SELECT COUNT(c.customerNumber) AS n_customers,
+       o.officeCode, o.city
+FROM offices o
+JOIN employees e ON o.officeCode = e.officeCode
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+GROUP BY o.officeCode
+""", conn)
+
 conn.close()
