@@ -9,4 +9,8 @@ conn = sqlite3.connect('data.sqlite')
 
 pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 
+# STEP 1
+# Replace None with your code
+df_boston = None
+
 conn.close()
