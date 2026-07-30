@@ -132,4 +132,5 @@ WHERE od.productCode IN (
 ORDER BY e.lastName
 """, conn)
 
+# Close the database connection
 conn.close()
