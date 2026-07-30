@@ -109,4 +109,25 @@ JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
 GROUP BY o.officeCode
 """, conn)
 
+# STEP 10
+# Select employees who sold products ordered by fewer than 20 customers
+df_under_20 = pd.read_sql("""
+SELECT DISTINCT e.employeeNumber, e.firstName, e.lastName,
+       o.city, o.officeCode
+FROM employees e
+JOIN offices o ON e.officeCode = o.officeCode
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+JOIN orders ord ON c.customerNumber = ord.customerNumber
+JOIN orderdetails od ON ord.orderNumber = od.orderNumber
+WHERE od.productCode IN (
+    SELECT p.productCode
+    FROM products p
+    JOIN orderdetails od2 ON p.productCode = od2.productCode
+    JOIN orders o2 ON od2.orderNumber = o2.orderNumber
+    GROUP BY p.productCode
+    HAVING COUNT(DISTINCT o2.customerNumber) < 20
+)
+ORDER BY e.lastName
+""", conn)
+
 conn.close()
