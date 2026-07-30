@@ -1,3 +1,5 @@
+# SQL Table Relations Lab
+# Using JOINs, GROUP BY, HAVING, and subqueries to analyze CRM data
 # STEP 0
 
 # SQL Library and Pandas Library
