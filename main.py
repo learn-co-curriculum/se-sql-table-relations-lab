@@ -58,4 +58,18 @@ JOIN payments p ON c.customerNumber = p.customerNumber
 ORDER BY CAST(p.amount AS REAL) DESC
 """, conn)
 
+# STEP 6
+# Return employee number, first name, last name, and number of customers
+# for employees whose customers have an average credit limit over 90k
+# Sort by number of customers high to low
+df_credit = pd.read_sql("""
+SELECT e.employeeNumber, e.firstName, e.lastName,
+       COUNT(c.customerNumber) AS num_customers
+FROM employees e
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+GROUP BY e.employeeNumber
+HAVING AVG(c.creditLimit) > 90000
+ORDER BY num_customers DESC
+""", conn)
+
 conn.close()
