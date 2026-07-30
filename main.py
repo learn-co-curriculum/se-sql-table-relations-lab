@@ -85,4 +85,17 @@ GROUP BY p.productCode
 ORDER BY totalunits DESC
 """, conn)
 
+# STEP 8
+# Return product name, code, and total number of unique customers (numpurchasers)
+# Sort by highest number of purchasers
+df_total_customers = pd.read_sql("""
+SELECT p.productName, p.productCode,
+       COUNT(DISTINCT o.customerNumber) AS numpurchasers
+FROM products p
+JOIN orderdetails od ON p.productCode = od.productCode
+JOIN orders o ON od.orderNumber = o.orderNumber
+GROUP BY p.productCode
+ORDER BY numpurchasers DESC
+""", conn)
+
 conn.close()
