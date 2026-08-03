@@ -12,7 +12,7 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 # STEP 1
 # Part 1: First/last names and job titles for all employees in Boston
 df_boston = pd.read_sql("""
-    SELECT e.firstName, e.lastName, e.jobTitle
+    SELECT e.firstName, e.lastName
     FROM employees e
     JOIN offices o ON e.officeCode = o.officeCode
     WHERE o.city = 'Boston';
@@ -97,12 +97,12 @@ df_total_customers = pd.read_sql("""
 # STEP 9
 # Part 5: Number of customers per office
 df_customers = pd.read_sql("""
-    SELECT o.officeCode, o.city, COUNT(c.customerNumber) AS n_customers
+    SELECT COUNT(c.customerNumber) AS n_customers, o.officeCode, o.city
     FROM offices o
     JOIN employees e ON o.officeCode = e.officeCode
     JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
     GROUP BY o.officeCode, o.city
-    ORDER BY n_customers DESC;
+    ORDER BY o.officeCode;
 """, conn)
 
 # STEP 10
@@ -121,7 +121,8 @@ df_under_20 = pd.read_sql("""
         JOIN orders ON orderdetails.orderNumber = orders.orderNumber
         GROUP BY productCode
         HAVING COUNT(DISTINCT orders.customerNumber) < 20
-    );
+    )
+    ORDER BY e.lastName;
 """, conn)
 
 conn.close()
